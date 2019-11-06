@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import axios from 'axios';
+import styled from 'styled-components';
 import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
 
@@ -26,11 +27,30 @@ const App: React.FC = () => {
         }} />
         <button onClick={submitForm}>Submit</button>
       </div>
+      <ContentContainer>
+        <TableContainer>
+          <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
+        </TableContainer>
+        <MetaContainer>
+          <PhotoMetaData photo={currentPhoto} />
+        </MetaContainer>
+      </ContentContainer>
 
-      <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
-      <PhotoMetaData photo={currentPhoto} />
     </div>
   );
 }
+
+const ContentContainer = styled.div`
+  display: flex;
+  margin-top: 50px;
+`
+
+const TableContainer = styled.div`
+  width: 50%;
+`
+
+const MetaContainer = styled.div`
+  width: 50%;
+`
 
 export default App;

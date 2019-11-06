@@ -26,7 +26,6 @@ const PhotoItem: FC<PhotoItemProps> = (props) => {
 const PhotosTable: FC<PhotosTableProps> = (props) => {
     return (
         <div>
-            Photos result:
             <table>
                 <thead>
                     <tr>
@@ -40,6 +39,7 @@ const PhotosTable: FC<PhotosTableProps> = (props) => {
                     {props.photos.map((photo) => {
                         return <PhotoItem onPreviewClick={props.onPreviewClick} photo={photo} />
                     })}
+                    {props.photos.length === 0 ? <tr><td colSpan={4}>Type search query to load photos</td></tr> : null}
                 </tbody>
             </table>
         </div>

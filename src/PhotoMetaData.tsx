@@ -26,7 +26,7 @@ const PhotoMetaData: FC<PhotoMetaDataProps> = (props) => {
                             return (
                                 <tr>
                                     <td>{key}</td>
-                                    <td>{value}</td>
+                                    <td>{value.toString().substring(0, 400)}</td>
                                 </tr>
                             )
                         })
