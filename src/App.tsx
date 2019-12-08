@@ -6,6 +6,7 @@ import PhotoMetaData from './PhotoMetaData';
 
 import './App.css';
 import { Photo } from './types';
+import Navbar from './layout/Navbar';
 
 const App: React.FC = () => {
   const [searchQuery, updateSearchQuery] = useState<string>("");
@@ -20,6 +21,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
+      <Navbar />
       <div>
         <label>Search query:</label>
         <input value={searchQuery} onChange={(event) => {
