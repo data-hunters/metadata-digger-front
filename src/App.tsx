@@ -9,26 +9,18 @@ import { Photo } from './types';
 import Navbar from './layout/Navbar';
 
 const App: React.FC = () => {
-  const [searchQuery, updateSearchQuery] = useState<string>("");
   const [photos, updatePhotos] = useState<Photo[]>([]);
   const [currentPhoto, updateCurrentPhoto] = useState<Photo | null>(null);
 
-  const submitForm = useCallback(() => {
+  const handleSearchSubmit = useCallback((searchQuery: string) => {
     axios.post('http://localhost:8080/api/v1/photos', { text_query: searchQuery }).then((response) => {
       updatePhotos(response.data.photos);
     });
-  }, [searchQuery]);
+  }, []);
 
   return (
     <div className="App">
-      <Navbar />
-      <div>
-        <label>Search query:</label>
-        <input value={searchQuery} onChange={(event) => {
-          updateSearchQuery(event.target.value)
-        }} />
-        <button onClick={submitForm}>Submit</button>
-      </div>
+      <Navbar onSubmitSearch={handleSearchSubmit} />
       <ContentContainer>
         <TableContainer>
           <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
