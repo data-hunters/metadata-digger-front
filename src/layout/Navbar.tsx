@@ -1,5 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useState, useMemo } from 'react';
 import styled from 'styled-components';
+import _debounce from 'lodash/debounce';
 
 import logo from '../assets/metadata-digger.png';
 
@@ -17,6 +18,15 @@ interface NavbarProps {
 
 const Navbar: FC<NavbarProps> = (props) => {
   const [searchQuery, updateSearchQuery] = useState<string>("");
+  const DEBOUNCE_TIME_MS = 600;
+
+  const handleSearchSubmit = useMemo(() =>
+    _debounce((query: string) => {
+      props.onSubmitSearch(query);
+    }, DEBOUNCE_TIME_MS),
+  [props.onSubmitSearch]);
+
+
   return (
     <header className="main-header">
       <nav className="navbar navbar-static-top">
@@ -30,7 +40,9 @@ const Navbar: FC<NavbarProps> = (props) => {
                 className="form-control"
                 value={searchQuery}
                 onChange={(event) => {
-                  updateSearchQuery(event.target.value)
+                  const query = event.target.value
+                  updateSearchQuery(query);
+                  handleSearchSubmit(query);
                 }}
                 placeholder="Search in your dataset..." />
             </SearchForm>
