@@ -1,4 +1,11 @@
 import React from 'react';
+import styled from 'styled-components';
+
+import logo from '../assets/metadata-digger.png';
+
+const NavbarLogo = styled.img`
+  width: 200px;
+`
 
 const Navbar = () => {
   return (
@@ -6,8 +13,7 @@ const Navbar = () => {
       <nav className="navbar navbar-static-top">
         <div className="container-fluid">
           <div className="navbar-header">
-
-            <div>Metadata digger</div>
+            <NavbarLogo src={logo} alt="logo" />
           </div>
         </div>
       </nav>
