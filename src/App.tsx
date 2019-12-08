@@ -21,15 +21,16 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Navbar onSubmitSearch={handleSearchSubmit} />
-      <ContentContainer>
-        <TableContainer>
-          <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
-        </TableContainer>
-        <MetaContainer>
-          <PhotoMetaData photo={currentPhoto} />
-        </MetaContainer>
+      <ContentContainer className="container">
+        <div className="row">
+          <div className="col-sm">
+            <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
+          </div>
+          <div className="col-sm">
+            <PhotoMetaData photo={currentPhoto} />
+          </div>
+        </div>
       </ContentContainer>
-
     </div>
   );
 }
@@ -37,14 +38,6 @@ const App: React.FC = () => {
 const ContentContainer = styled.div`
   display: flex;
   margin-top: 50px;
-`
-
-const TableContainer = styled.div`
-  width: 50%;
-`
-
-const MetaContainer = styled.div`
-  width: 50%;
 `
 
 export default App;
