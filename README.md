@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Running project locally
+
+1. Install nvm https://github.com/nvm-sh/nvm#installation-and-update
+2. Install node 12 - `nvm install 12`
+3. Install project dependencies - `npm install`
+4. Run webpack server - `npm start`
+
 ## Available Scripts
 
 In the project directory, you can run:
