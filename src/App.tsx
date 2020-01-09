@@ -7,6 +7,7 @@ import PhotoMetaData from './PhotoMetaData';
 import './App.css';
 import { Photo } from './types';
 import Navbar from './layout/Navbar';
+import FileUplaoder from './FileUploader';
 
 const App: React.FC = () => {
   const [photos, updatePhotos] = useState<Photo[]>([]);
@@ -21,6 +22,9 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Navbar onSubmitSearch={handleSearchSubmit} />
+      <div className="container">
+        <FileUplaoder />
+      </div>
       <ContentContainer className="container">
         <div className="row">
           <div className="col-sm">
