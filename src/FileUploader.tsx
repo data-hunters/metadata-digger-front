@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, FC } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { useDropzone } from 'react-dropzone';
@@ -22,16 +22,23 @@ const FileUploadZone = styled.div`
 const uploadFile = (file: File) => {
   const formData = new FormData();
   formData.append('file', file);
-  axios.post('http://localhost:8080/api/v1/start-indexing', formData).then((response) => {
+  return axios.post('http://localhost:8080/api/v1/start-indexing', formData).then((response) => {
     console.log(response);
     localStorage.setItem("fileUploaded", "true");
   });
 }
 
-const FileUplaoder = () => {
+interface FileUplaoderProps {
+  onUploadCompleted: () => void;
+}
+
+const FileUplaoder: FC<FileUplaoderProps> = ({ onUploadCompleted
+}) => {
   const onDrop = useCallback(acceptedFiles => {
-    uploadFile(acceptedFiles[0]);
-  }, [])
+    uploadFile(acceptedFiles[0]).then(() => {
+      onUploadCompleted();
+    });
+  }, [onUploadCompleted])
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
 
   return (
