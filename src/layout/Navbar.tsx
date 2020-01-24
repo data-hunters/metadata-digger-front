@@ -24,7 +24,7 @@ const Navbar: FC<NavbarProps> = (props) => {
     _debounce((query: string) => {
       props.onSubmitSearch(query);
     }, DEBOUNCE_TIME_MS),
-  [props.onSubmitSearch]);
+  [props]);
 
 
   return (
@@ -35,7 +35,7 @@ const Navbar: FC<NavbarProps> = (props) => {
             <NavbarLogo src={logo} alt="logo" />
           </div>
           <div>
-            <SearchForm className="navbar-form navbar-right" role="search">
+            <SearchForm onSubmit={e => e.preventDefault()} className="navbar-form navbar-right" role="search">
               <input
                 className="form-control"
                 value={searchQuery}
