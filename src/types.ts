@@ -4,5 +4,6 @@ export interface Photo {
     file_path: string;
     file_type: string;
     directories: Array<String>;
-    meta_data: any;
+    meta_data: Record<string, string | number>;
+    thumbnail: string;
 }
