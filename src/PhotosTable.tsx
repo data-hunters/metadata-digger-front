@@ -18,9 +18,9 @@ const PhotoItem: FC<PhotoItemProps> = (props) => {
       <td>
         <img src={`data:image/png;base64, ${photo.thumbnail}`} alt='thumbnail'/>
         </td>
-      <td>{photo.file_path}</td>
+      <td>{photo.file_path.match(/[^/]*$/g)}</td>
       <td>{photo.file_type}</td>
-      <td><button onClick={() => props.onPreviewClick(photo)}>show meta data</button></td>
+      <td><button className="btn btn-primary" onClick={() => props.onPreviewClick(photo)}>view details</button></td>
     </tr>
   )
 }
@@ -31,7 +31,7 @@ const PhotosTable: FC<PhotosTableProps> = (props) => {
       <thead>
         <tr>
           <th>Thumbnail</th>
-          <th>File path</th>
+          <th>File name</th>
           <th>Type</th>
           <th>Actions</th>
         </tr>
