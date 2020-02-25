@@ -2,6 +2,12 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Running project locally
 
+### With docker
+
+1. docker-compose up
+
+### Full setup
+
 1. Install nvm https://github.com/nvm-sh/nvm#installation-and-update
 2. Install node 12 - `nvm install 12`
 3. Install project dependencies - `npm install`
