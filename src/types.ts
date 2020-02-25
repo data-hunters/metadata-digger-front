@@ -3,7 +3,8 @@ export interface Photo {
     base_path: string;
     file_path: string;
     file_type: string;
-    directories: Array<String>;
+    directories: string[];
     meta_data: Record<string, string | number>;
     thumbnail: string;
+    labels: string[];
 }

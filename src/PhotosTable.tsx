@@ -11,6 +11,10 @@ interface PhotoItemProps {
   photo: Photo;
 }
 
+const capitalize = (word: string): string => {
+  return `${word.charAt(0).toUpperCase()}${word.slice(1)}`
+}
+
 const PhotoItem: FC<PhotoItemProps> = (props) => {
   const { photo } = props;
   return (
@@ -19,6 +23,7 @@ const PhotoItem: FC<PhotoItemProps> = (props) => {
         <img src={`data:image/png;base64, ${photo.thumbnail}`} alt='thumbnail'/>
         </td>
       <td>{photo.file_path.match(/[^/]*$/g)}</td>
+      <td>{photo.labels && photo.labels.map(capitalize).join(', ')}</td>
       <td>{photo.file_type}</td>
       <td><button className="btn btn-primary" onClick={() => props.onPreviewClick(photo)}>view details</button></td>
     </tr>
@@ -32,6 +37,7 @@ const PhotosTable: FC<PhotosTableProps> = (props) => {
         <tr>
           <th>Thumbnail</th>
           <th>File name</th>
+          <th>Labels</th>
           <th>Type</th>
           <th>Actions</th>
         </tr>
