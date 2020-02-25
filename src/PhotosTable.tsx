@@ -38,7 +38,7 @@ const PhotosTable: FC<PhotosTableProps> = (props) => {
       </thead>
       <tbody>
         {props.photos.map((photo) => {
-          return <PhotoItem onPreviewClick={props.onPreviewClick} photo={photo} />
+          return <PhotoItem key={photo.id} onPreviewClick={props.onPreviewClick} photo={photo} />
         })}
         {props.photos.length === 0 ? <tr><td colSpan={4}>Start by typing query</td></tr> : null}
       </tbody>

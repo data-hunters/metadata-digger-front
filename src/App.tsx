@@ -27,16 +27,25 @@ const App: React.FC = () => {
         <FileUplaoder onUploadCompleted={() => { }} />
       </div>
 
-      <ContentContainer className="container">
-        <div className="row">
-          <div className="col-sm">
-            <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
-          </div>
-          <div className="col-sm">
+      {currentPhoto && (
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-12">
+              <button onClick={() => { updateCurrentPhoto(null) }}>back</button>
+            </div>
             <PhotoMetaData photo={currentPhoto} />
           </div>
         </div>
-      </ContentContainer>
+      )}
+      {!currentPhoto && (
+        <ContentContainer className="container">
+          <div className="row">
+            <div className="col-sm">
+              <PhotosTable photos={photos} onPreviewClick={(photo: Photo) => updateCurrentPhoto(photo)} />
+            </div>
+          </div>
+        </ContentContainer>
+      )}
     </div>
   );
 }
