@@ -31,7 +31,7 @@ const App: React.FC = () => {
         <div className="container">
           <div className="row">
             <div className="col-sm-12">
-              <button onClick={() => { updateCurrentPhoto(null) }}>back</button>
+              <button className="btn btn-primary" onClick={() => { updateCurrentPhoto(null) }}>back</button>
             </div>
             <PhotoMetaData photo={currentPhoto} />
           </div>
