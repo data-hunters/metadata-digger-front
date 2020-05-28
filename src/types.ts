@@ -21,3 +21,13 @@ export interface GraphState {
     values: Facet;
 }
 
+export type GraphPlacement = "left" | "right";
+export const GRAPH_PLACEMENTS: GraphPlacement[] = [ "left", "right" ]
+
+export interface AppState {
+    currentPhoto?: Photo;
+    photos: Photo[]
+    facets: Facets;
+    graphs: Record<GraphPlacement, GraphType>;
+}
+
