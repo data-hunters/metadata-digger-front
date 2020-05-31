@@ -99,7 +99,6 @@ const App: React.FC = () => {
 }
 
 const ContentContainer = styled.div`
-  // display: flex;
   margin-top: 50px;
 `
 
