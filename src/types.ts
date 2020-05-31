@@ -8,3 +8,26 @@ export interface Photo {
     thumbnail: string;
     labels: string[];
 }
+
+export type Facet = Record<string, number>;
+export type Facets = Record<string, Facet>;
+ 
+
+export type GraphType = "tag_names" | "directory_names" | "labels" | "file_type" | "md_exif_ifd0_model" ;
+export const GRAPH_TYPES: GraphType[] = [ "tag_names", "directory_names", "labels", "file_type", "md_exif_ifd0_model" ];
+
+export interface GraphState {
+    graphType: GraphType
+    values: Facet;
+}
+
+export type GraphPlacement = "left" | "right";
+export const GRAPH_PLACEMENTS: GraphPlacement[] = [ "left", "right" ]
+
+export interface AppState {
+    currentPhoto?: Photo;
+    photos: Photo[]
+    facets: Facets;
+    graphs: Record<GraphPlacement, GraphType>;
+}
+
