@@ -11,6 +11,7 @@ import FileUplaoder from './FileUploader';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
 import { Action } from './actions';
+import ApiService from './ApiService';
 
 const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
@@ -33,22 +34,18 @@ function selectPhoto(newPhoto: Photo): Action {
 
 const deselectPhoto: Action = { type: "deselectPhoto" }
 
+const DEFAULT_PER_PAGE = 100
 const App: React.FC = () => {
   const [{currentPhoto, photos, facets, graphs}, dispatch] = useReducer(reducer, INITIAL_STATE)
-  const handleSearchSubmit = useCallback((searchQuery: string) => {
-    axios.post('http://localhost:8080/api/v1/photos', { text_query: searchQuery, facets: GRAPH_TYPES }).then((response) => {
+  const handleSearchSubmit = useCallback((searchQuery: string) => {makeRequest(searchQuery)}, []);
+
+  useEffect( () => { makeRequest(undefined)}, []);
+
+  const makeRequest = async (searchQuery?: string) => {
+    ApiService.getPhotos({facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery}).then((response) => {
       dispatch(updateDate(response.data.photos, response.data.facets));
     });
-  }, []);
-
-  useEffect( () => {
-    async function fetchInitalData() {
-      await axios.post('http://localhost:8080/api/v1/photos', { facets: GRAPH_TYPES }).then((response) => {
-        dispatch(updateDate(response.data.photos, response.data.facets));
-      });
-    }
-    fetchInitalData();
-  }, []);
+  }
 
   let getGraphState = (graphType: GraphType) : GraphState | null => {
     let graphFacets = facets[graphType]

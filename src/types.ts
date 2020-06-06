@@ -1,3 +1,8 @@
+export interface PhotoLocation {
+    latitude: number;
+    longitude: number;
+}
+
 export interface Photo {
     id: string;
     base_path: string;
@@ -7,6 +12,7 @@ export interface Photo {
     meta_data: Record<string, string | number>;
     thumbnail: string;
     labels: string[];
+    location?: PhotoLocation;
 }
 
 export type Facet = Record<string, number>;

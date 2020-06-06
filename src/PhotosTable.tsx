@@ -17,8 +17,10 @@ const capitalize = (word: string): string => {
 
 const PhotoItem: FC<PhotoItemProps> = (props) => {
   const { photo } = props;
+  const rowHighlight = photo.location ? "table-info" : "table-default";
+
   return (
-    <tr>
+    <tr className={rowHighlight}>
       <td>
         <img src={`data:image/png;base64, ${photo.thumbnail}`} alt='thumbnail'/>
         </td>
