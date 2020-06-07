@@ -12,6 +12,7 @@ import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
 import { Action } from './actions';
 import ApiService from './ApiService';
+import PhotoMap from './PhotoMap';
 
 const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
@@ -83,6 +84,9 @@ const App: React.FC = () => {
                 <GraphContainer  graphState={state} changeType={(gt) => dispatch(changeGraphType(gp, gt))} />
               </div>))
             })}
+          </div>
+          <div className="row">
+            <PhotoMap photos={photos} selectPhoto={p => dispatch(selectPhoto(p))}/>
           </div>
           <div className="row">
             <div className="col-sm">
