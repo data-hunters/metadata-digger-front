@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Photo, PhotoLocation } from './types';
+import { Photo } from './types';
 import PhotoMap from './PhotoMap';
 
 interface PhotoMetaDataProps {

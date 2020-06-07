@@ -58,7 +58,7 @@ const PhotoMap: FC<PhotoMapProps> = (props) => {
                             <Marker key={photo.id} position={location} icon={icon}>
                                 <Popup>
                                     <img src={`data:image/png;base64, ${photo.thumbnail}`} alt='thumbnail' /><br/>
-                                    <a href='#' onClick={() => props.selectPhoto(photo)}>Show more</a>
+                                    <button className="btn btn-primary btn-sm btn-block" onClick={() => props.selectPhoto(photo)}>select</button>
 
                                 </Popup>
                             </Marker>

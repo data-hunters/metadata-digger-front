@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useReducer } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
