@@ -30,7 +30,7 @@ const PhotoMap: FC<PhotoMapProps> = (props) => {
         props.photos.filter(p => {return p.location !== null})
             .map(p => { return { location: getPostion(p.location as PhotoLocation), photo: p}})
 
-    let calculateContriod = (points: MapPoint[]) => {
+    let calculateCentriod = (points: MapPoint[]) => {
         const sum = points.reduce( (previous, current) => {return {
             lat: previous.lat + current.lng,
             lng: previous.lat + current.lng
@@ -39,7 +39,7 @@ const PhotoMap: FC<PhotoMapProps> = (props) => {
     }
 
     const getCentroid =  () => {
-        if(photosByLocation.length !== 0) return calculateContriod(photosByLocation.map(pl => { return pl.location}))
+        if(photosByLocation.length !== 0) return calculateCentriod(photosByLocation.map(pl => { return pl.location}))
         else return undefined
     }
     
