@@ -17,6 +17,7 @@ const capitalize = (word: string): string => {
 
 const PhotoItem: FC<PhotoItemProps> = (props) => {
   const { photo } = props;
+
   return (
     <tr>
       <td>
