@@ -10,22 +10,23 @@ const NavbarLogo = styled.img`
 
 const SearchForm = styled.form`
   width: 500px;
-`
+`;
 
 interface NavbarProps {
   onSubmitSearch: (searchQuery: string) => void;
 }
 
 const Navbar: FC<NavbarProps> = (props) => {
-  const [searchQuery, updateSearchQuery] = useState<string>("");
+  const [searchQuery, updateSearchQuery] = useState<string>('');
   const DEBOUNCE_TIME_MS = 600;
 
-  const handleSearchSubmit = useMemo(() =>
-    _debounce((query: string) => {
-      props.onSubmitSearch(query);
-    }, DEBOUNCE_TIME_MS),
-  [props]);
-
+  const handleSearchSubmit = useMemo(
+    () =>
+      _debounce((query: string) => {
+        props.onSubmitSearch(query);
+      }, DEBOUNCE_TIME_MS),
+    [props],
+  );
 
   return (
     <header className="main-header">
@@ -35,22 +36,23 @@ const Navbar: FC<NavbarProps> = (props) => {
             <NavbarLogo src={logo} alt="logo" />
           </div>
           <div>
-            <SearchForm onSubmit={e => e.preventDefault()} className="navbar-form navbar-right" role="search">
+            <SearchForm onSubmit={(e) => e.preventDefault()} className="navbar-form navbar-right" role="search">
               <input
                 className="form-control"
                 value={searchQuery}
                 onChange={(event) => {
-                  const query = event.target.value
+                  const query = event.target.value;
                   updateSearchQuery(query);
                   handleSearchSubmit(query);
                 }}
-                placeholder="Search in your dataset..." />
+                placeholder="Search in your dataset..."
+              />
             </SearchForm>
           </div>
         </div>
       </nav>
     </header>
-  )
-}
+  );
+};
 
 export default Navbar;

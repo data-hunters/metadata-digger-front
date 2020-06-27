@@ -16,44 +16,47 @@ const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
   photos: [],
   facets: {},
-  graphs: { left: "file_type", right: "md_exif_ifd0_model" }
-}
+  graphs: { left: 'file_type', right: 'md_exif_ifd0_model' },
+};
 
 function updateDate(photos: Photo[], facets: Facets): Action {
-  return { type: "updateData", photos: photos, facets: facets }
+  return { type: 'updateData', photos: photos, facets: facets };
 }
 
 function changeGraphType(whichGrap: GraphPlacement, newGraphType: GraphType): Action {
-  return { type: "changeGraphType", whichGraph: whichGrap, newGraphType: newGraphType }
+  return { type: 'changeGraphType', whichGraph: whichGrap, newGraphType: newGraphType };
 }
 
 function selectPhoto(newPhoto: Photo): Action {
-  return { type: "selectPhoto", newPhoto: newPhoto }
+  return { type: 'selectPhoto', newPhoto: newPhoto };
 }
 
-const deselectPhoto: Action = { type: "deselectPhoto" }
+const deselectPhoto: Action = { type: 'deselectPhoto' };
 
-const DEFAULT_PER_PAGE = 100
+const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
-  const [{currentPhoto, photos, facets, graphs}, dispatch] = useReducer(reducer, INITIAL_STATE)
-  const handleSearchSubmit = useCallback((searchQuery: string) => {makeRequest(searchQuery)}, []);
+  const [{ currentPhoto, photos, facets, graphs }, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const handleSearchSubmit = useCallback((searchQuery: string) => {
+    makeRequest(searchQuery);
+  }, []);
 
-  useEffect( () => { makeRequest(undefined)}, []);
-  useEffect( () => { document.title = "Metadata Digger Web UI"}, []);
+  useEffect(() => { makeRequest(undefined) }, []);
+  useEffect(() => { document.title = "Metadata Digger Web UI" }, []);
 
   const makeRequest = async (searchQuery?: string) => {
-    ApiService.getPhotos({facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery}).then((response) => {
-      dispatch(updateDate(response.data.photos, response.data.facets));
-    });
-  }
+    ApiService.getPhotos({ facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery }).then(
+      (response) => {
+        dispatch(updateDate(response.data.photos, response.data.facets));
+      },
+    );
+  };
 
-  let getGraphState = (graphType: GraphType) : GraphState | null => {
-    let graphFacets = facets[graphType]
+  const getGraphState = (graphType: GraphType): GraphState | null => {
+    const graphFacets = facets[graphType];
 
-    if(graphFacets) return { graphType: graphType, values: graphFacets };
-    else return null  
-  }
-
+    if (graphFacets) return { graphType: graphType, values: graphFacets };
+    else return null;
+  };
 
   return (
     <div className="App">
@@ -61,10 +64,16 @@ const App: React.FC = () => {
 
       {currentPhoto && (
         <div className="container">
-
           <div className="row">
             <div className="col-sm-12">
-              <button className="btn btn-primary" onClick={() => { dispatch(deselectPhoto) }}>back</button>
+              <button
+                className="btn btn-primary"
+                onClick={() => {
+                  dispatch(deselectPhoto);
+                }}
+              >
+                back
+              </button>
             </div>
             <PhotoMetaData photo={currentPhoto} />
           </div>
@@ -72,16 +81,20 @@ const App: React.FC = () => {
       )}
       {!currentPhoto && (
         <ContentContainer className="container">
-          <div className = "row">
-            {GRAPH_PLACEMENTS.map( (gp) => {
-              let state = getGraphState(graphs[gp])
-              return(state && (<div className="col" key={gp}>
-                <GraphContainer  graphState={state} changeType={(gt) => dispatch(changeGraphType(gp, gt))} />
-              </div>))
+          <div className="row">
+            {GRAPH_PLACEMENTS.map((gp) => {
+              const state = getGraphState(graphs[gp]);
+              return (
+                state && (
+                  <div className="col" key={gp}>
+                    <GraphContainer graphState={state} changeType={(gt) => dispatch(changeGraphType(gp, gt))} />
+                  </div>
+                )
+              );
             })}
           </div>
           <div className="row">
-            <PhotoMap photos={photos} selectPhoto={p => dispatch(selectPhoto(p))}/>
+            <PhotoMap photos={photos} selectPhoto={(p) => dispatch(selectPhoto(p))} />
           </div>
           <div className="row">
             <div className="col-sm">
@@ -92,10 +105,10 @@ const App: React.FC = () => {
       )}
     </div>
   );
-}
+};
 
 const ContentContainer = styled.div`
   margin-top: 50px;
-`
+`;
 
 export default App;

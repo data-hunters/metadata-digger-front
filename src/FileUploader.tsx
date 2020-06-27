@@ -24,36 +24,38 @@ const uploadFile = (file: File) => {
   formData.append('file', file);
   return axios.post('http://localhost:8080/api/v1/start-indexing', formData).then((response) => {
     console.log(response);
-    localStorage.setItem("fileUploaded", "true");
+    localStorage.setItem('fileUploaded', 'true');
   });
-}
+};
 
 interface FileUplaoderProps {
   onUploadCompleted: () => void;
 }
 
-const FileUplaoder: FC<FileUplaoderProps> = ({ onUploadCompleted
-}) => {
-  const onDrop = useCallback(acceptedFiles => {
-    uploadFile(acceptedFiles[0]).then(() => {
-      onUploadCompleted();
-    });
-  }, [onUploadCompleted])
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+const FileUplaoder: FC<FileUplaoderProps> = ({ onUploadCompleted }) => {
+  const onDrop = useCallback(
+    (acceptedFiles) => {
+      uploadFile(acceptedFiles[0]).then(() => {
+        onUploadCompleted();
+      });
+    },
+    [onUploadCompleted],
+  );
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <FileUplaoderContainer>
       <h3>Start by uploading your image set:</h3>
       <FileUploadZone {...getRootProps()}>
         <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <p>Drop the files here ...</p> :
-            <p>Drag 'n' drop some files here, or click to select files</p>
-        }
+        {isDragActive ? (
+          <p>Drop the files here ...</p>
+        ) : (
+          <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
+        )}
       </FileUploadZone>
     </FileUplaoderContainer>
-  )
-}
+  );
+};
 
 export default FileUplaoder;
