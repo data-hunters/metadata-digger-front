@@ -6,7 +6,6 @@ import PhotoMetaData from './PhotoMetaData';
 import './App.css';
 import { Photo, Facets, GraphState, GraphType, GRAPH_TYPES, AppState, GraphPlacement, GRAPH_PLACEMENTS } from './types';
 import Navbar from './layout/Navbar';
-import FileUplaoder from './FileUploader';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
 import { Action } from './actions';
@@ -40,6 +39,7 @@ const App: React.FC = () => {
   const handleSearchSubmit = useCallback((searchQuery: string) => {makeRequest(searchQuery)}, []);
 
   useEffect( () => { makeRequest(undefined)}, []);
+  useEffect( () => { document.title = "Metadata Digger Web UI"}, []);
 
   const makeRequest = async (searchQuery?: string) => {
     ApiService.getPhotos({facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery}).then((response) => {
@@ -58,10 +58,6 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <Navbar onSubmitSearch={handleSearchSubmit} />
-
-      <div className="container">
-        <FileUplaoder onUploadCompleted={() => { }} />
-      </div>
 
       {currentPhoto && (
         <div className="container">
