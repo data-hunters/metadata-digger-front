@@ -10,7 +10,7 @@ const PhotoMetaData: FC<PhotoMetaDataProps> = (props) => {
   const { meta_data } = props.photo;
   const fileName = props.photo.file_path.match(/[^/]*$/g);
 
-  const doNotClickPhoto = (photo: Photo) => {};
+  const doNotClickPhoto = () => {};
   return (
     <>
       <div className="row">

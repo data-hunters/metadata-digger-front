@@ -40,8 +40,12 @@ const App: React.FC = () => {
     makeRequest(searchQuery);
   }, []);
 
-  useEffect(() => { makeRequest(undefined) }, []);
-  useEffect(() => { document.title = "Metadata Digger Web UI" }, []);
+  useEffect(() => {
+    makeRequest(undefined);
+  }, []);
+  useEffect(() => {
+    document.title = 'Metadata Digger Web UI';
+  }, []);
 
   const makeRequest = async (searchQuery?: string) => {
     ApiService.getPhotos({ facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery }).then(
