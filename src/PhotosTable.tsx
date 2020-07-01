@@ -12,8 +12,8 @@ interface PhotoItemProps {
 }
 
 const capitalize = (word: string): string => {
-  return `${word.charAt(0).toUpperCase()}${word.slice(1)}`
-}
+  return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+};
 
 const PhotoItem: FC<PhotoItemProps> = (props) => {
   const { photo } = props;
@@ -21,15 +21,19 @@ const PhotoItem: FC<PhotoItemProps> = (props) => {
   return (
     <tr>
       <td>
-        <img src={`data:image/png;base64, ${photo.thumbnail}`} alt='thumbnail'/>
-        </td>
+        <img src={`data:image/png;base64, ${photo.thumbnail}`} alt="thumbnail" />
+      </td>
       <td>{photo.file_path.match(/[^/]*$/g)}</td>
       <td>{photo.labels && photo.labels.map(capitalize).join(', ')}</td>
       <td>{photo.file_type}</td>
-      <td><button className="btn btn-primary" onClick={() => props.onPreviewClick(photo)}>view details</button></td>
+      <td>
+        <button className="btn btn-primary" onClick={() => props.onPreviewClick(photo)}>
+          view details
+        </button>
+      </td>
     </tr>
-  )
-}
+  );
+};
 
 const PhotosTable: FC<PhotosTableProps> = (props) => {
   return (
@@ -45,12 +49,16 @@ const PhotosTable: FC<PhotosTableProps> = (props) => {
       </thead>
       <tbody>
         {props.photos.map((photo) => {
-          return <PhotoItem key={photo.id} onPreviewClick={props.onPreviewClick} photo={photo} />
+          return <PhotoItem key={photo.id} onPreviewClick={props.onPreviewClick} photo={photo} />;
         })}
-        {props.photos.length === 0 ? <tr><td colSpan={4}>Start by typing query</td></tr> : null}
+        {props.photos.length === 0 ? (
+          <tr>
+            <td colSpan={4}>Start by typing query</td>
+          </tr>
+        ) : null}
       </tbody>
     </table>
-  )
-}
+  );
+};
 
 export default PhotosTable;
