@@ -4,7 +4,7 @@ import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
 
 import './App.css';
-import { Photo, Facets, GraphState, GraphType, GRAPH_TYPES, AppState, GraphPlacement, GRAPH_PLACEMENTS } from './types';
+import { Photo, Facets, GraphState, GraphType, AppState, GraphPlacement, GRAPH_PLACEMENTS, GRAPH_TYPES } from './types';
 import Navbar from './layout/Navbar';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
@@ -16,7 +16,7 @@ const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
   photos: [],
   facets: {},
-  graphs: { left: 'file_type', right: 'md_exif_ifd0_model' },
+  graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
 };
 
 function updateDate(photos: Photo[], facets: Facets): Action {
@@ -48,11 +48,13 @@ const App: React.FC = () => {
   }, []);
 
   const makeRequest = async (searchQuery?: string) => {
-    ApiService.getPhotos({ facets: GRAPH_TYPES, perPage: DEFAULT_PER_PAGE, searchQuery: searchQuery }).then(
-      (response) => {
-        dispatch(updateDate(response.data.photos, response.data.facets));
-      },
-    );
+    ApiService.getPhotos({
+      facets: GRAPH_TYPES.map((v) => v as string),
+      perPage: DEFAULT_PER_PAGE,
+      searchQuery: searchQuery,
+    }).then((response) => {
+      dispatch(updateDate(response.data.photos, response.data.facets));
+    });
   };
 
   const getGraphState = (graphType: GraphType): GraphState | null => {

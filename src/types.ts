@@ -18,8 +18,21 @@ export interface Photo {
 export type Facet = Record<string, number>;
 export type Facets = Record<string, Facet>;
 
-export type GraphType = 'tag_names' | 'directory_names' | 'labels' | 'file_type' | 'md_exif_ifd0_model';
-export const GRAPH_TYPES: GraphType[] = ['tag_names', 'directory_names', 'labels', 'file_type', 'md_exif_ifd0_model'];
+export enum GraphType {
+  TAG_NAMES = 'tag_names',
+  DIRECTORY_NAMES = 'directory_names',
+  LABELS = 'labels',
+  FILE_TYPE = 'file_type',
+  CAMERA_MODEL = 'camera_model',
+}
+
+export const GRAPH_TYPES: GraphType[] = [
+  GraphType.TAG_NAMES,
+  GraphType.DIRECTORY_NAMES,
+  GraphType.LABELS,
+  GraphType.FILE_TYPE,
+  GraphType.CAMERA_MODEL,
+];
 
 export interface GraphState {
   graphType: GraphType;
