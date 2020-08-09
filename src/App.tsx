@@ -4,11 +4,11 @@ import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
 
 import './App.css';
-import { Photo, Facets, GraphState, GraphType, AppState, GraphPlacement, GRAPH_PLACEMENTS, GRAPH_TYPES } from './types';
+import { GraphState, GraphType, AppState, GRAPH_PLACEMENTS, GRAPH_TYPES } from './types';
 import Navbar from './layout/Navbar';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
-import { Action } from './actions';
+import Actions from './actions';
 import ApiService from './ApiService';
 import PhotoMap from './PhotoMap';
 
@@ -16,22 +16,9 @@ const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
   photos: [],
   facets: {},
+  filteringState: { appliedFilters: [], possbileFilters: [] },
   graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
 };
-
-function updateDate(photos: Photo[], facets: Facets): Action {
-  return { type: 'updateData', photos: photos, facets: facets };
-}
-
-function changeGraphType(whichGrap: GraphPlacement, newGraphType: GraphType): Action {
-  return { type: 'changeGraphType', whichGraph: whichGrap, newGraphType: newGraphType };
-}
-
-function selectPhoto(newPhoto: Photo): Action {
-  return { type: 'selectPhoto', newPhoto: newPhoto };
-}
-
-const deselectPhoto: Action = { type: 'deselectPhoto' };
 
 const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
@@ -53,7 +40,7 @@ const App: React.FC = () => {
       perPage: DEFAULT_PER_PAGE,
       searchQuery: searchQuery,
     }).then((response) => {
-      dispatch(updateDate(response.data.photos, response.data.facets));
+      dispatch(Actions.updateDate(response.data.photos, response.data.facets));
     });
   };
 
@@ -75,7 +62,7 @@ const App: React.FC = () => {
               <button
                 className="btn btn-primary"
                 onClick={() => {
-                  dispatch(deselectPhoto);
+                  dispatch(Actions.deselectPhoto());
                 }}
               >
                 back
@@ -93,18 +80,18 @@ const App: React.FC = () => {
               return (
                 state && (
                   <div className="col" key={gp}>
-                    <GraphContainer graphState={state} changeType={(gt) => dispatch(changeGraphType(gp, gt))} />
+                    <GraphContainer graphState={state} changeType={(gt) => dispatch(Actions.changeGraphType(gp, gt))} />
                   </div>
                 )
               );
             })}
           </div>
           <div className="row">
-            <PhotoMap photos={photos} selectPhoto={(p) => dispatch(selectPhoto(p))} />
+            <PhotoMap photos={photos} selectPhoto={(p) => dispatch(Actions.selectPhoto(p))} />
           </div>
           <div className="row">
             <div className="col-sm">
-              <PhotosTable photos={photos} onPreviewClick={(photo) => dispatch(selectPhoto(photo))} />
+              <PhotosTable photos={photos} onPreviewClick={(photo) => dispatch(Actions.selectPhoto(photo))} />
             </div>
           </div>
         </ContentContainer>
