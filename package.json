@@ -19,6 +19,7 @@
     "bootstrap": "^4.4.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
+    "fp-ts": "^2.8.1",
     "husky": "^4.2.5",
     "leaflet": "^1.6.0",
     "lint-staged": "^10.2.11",

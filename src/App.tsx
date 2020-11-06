@@ -4,25 +4,26 @@ import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
 
 import './App.css';
-import { GraphState, GraphType, AppState, GRAPH_PLACEMENTS, GRAPH_TYPES } from './types';
+import { AppState, GRAPH_PLACEMENTS, GRAPH_TYPES, GraphState, GraphType } from './types';
 import Navbar from './layout/Navbar';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
 import Actions from './actions';
 import ApiService from './ApiService';
 import PhotoMap from './PhotoMap';
+import Filters from './Filters';
 
 const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
   photos: [],
   facets: {},
-  filteringState: { appliedFilters: [], possbileFilters: [] },
+  filteringState: { appliedFilters: [], possibleFilters: [] },
   graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
 };
 
 const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
-  const [{ currentPhoto, photos, facets, graphs }, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [{ currentPhoto, photos, facets, filteringState, graphs }, dispatch] = useReducer(reducer, INITIAL_STATE);
   const handleSearchSubmit = useCallback((searchQuery: string) => {
     makeRequest(searchQuery);
   }, []);
@@ -40,7 +41,8 @@ const App: React.FC = () => {
       perPage: DEFAULT_PER_PAGE,
       searchQuery: searchQuery,
     }).then((response) => {
-      dispatch(Actions.updateDate(response.data.photos, response.data.facets));
+      console.log(response.data.possible_filters);
+      dispatch(Actions.updateDate(response.data.photos, response.data.facets, response.data.possible_filters));
     });
   };
 
@@ -88,6 +90,9 @@ const App: React.FC = () => {
           </div>
           <div className="row">
             <PhotoMap photos={photos} selectPhoto={(p) => dispatch(Actions.selectPhoto(p))} />
+          </div>
+          <div className="row">
+            <Filters appliedFilters={filteringState.appliedFilters} possbileFilters={filteringState.possibleFilters} />
           </div>
           <div className="row">
             <div className="col-sm">

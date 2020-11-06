@@ -19,13 +19,14 @@ export type Facet = Record<string, number>;
 export type Facets = Record<string, Facet>;
 
 export interface FilterEntry {
-  fieldName: string;
-  numberOfEntries: number;
+  name: string;
+  entry_count: number;
+  is_selected: boolean;
 }
 
 export interface Filter {
-  possibleValues: FilterEntry[];
-  selectedValues: string[];
+  field: string;
+  values: FilterEntry[];
 }
 
 export enum GraphType {
@@ -54,7 +55,7 @@ export const GRAPH_PLACEMENTS: GraphPlacement[] = ['left', 'right'];
 
 export interface FilteringState {
   appliedFilters: Filter[];
-  possbileFilters: Filter[];
+  possibleFilters: Filter[];
 }
 export interface AppState {
   currentPhoto?: Photo;
