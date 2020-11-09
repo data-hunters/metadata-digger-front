@@ -41,7 +41,6 @@ const App: React.FC = () => {
       perPage: DEFAULT_PER_PAGE,
       searchQuery: searchQuery,
     }).then((response) => {
-      console.log(response.data.possible_filters);
       dispatch(Actions.updateDate(response.data.photos, response.data.facets, response.data.possible_filters));
     });
   };
@@ -51,6 +50,10 @@ const App: React.FC = () => {
 
     if (graphFacets) return { graphType: graphType, values: graphFacets };
     else return null;
+  };
+
+  const submitFilter = async (filterName: string, selected: Set<string>): Promise<void> => {
+    console.log(`submitting: ${filterName} selected ${Array.from(selected).join(' ')}`);
   };
 
   return (
@@ -92,7 +95,11 @@ const App: React.FC = () => {
             <PhotoMap photos={photos} selectPhoto={(p) => dispatch(Actions.selectPhoto(p))} />
           </div>
           <div className="row">
-            <Filters appliedFilters={filteringState.appliedFilters} possbileFilters={filteringState.possibleFilters} />
+            <Filters
+              appliedFilters={filteringState.appliedFilters}
+              possibleFilters={filteringState.possibleFilters}
+              onSubmit={submitFilter}
+            />
           </div>
           <div className="row">
             <div className="col-sm">
