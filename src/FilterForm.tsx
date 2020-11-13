@@ -9,6 +9,7 @@ interface FilterProps {
 const FilterForm: FC<FilterProps> = (props) => {
   const selectedValues = props.filter.values.filter((e) => e.is_selected).map((e) => e.name);
 
+  const filterField = props.filter.field;
   const [selected, setSelected] = useState(new Set<string>(selectedValues));
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -25,19 +26,29 @@ const FilterForm: FC<FilterProps> = (props) => {
 
   const submitForm = () => {
     setSubmitting(true);
-    props.onSubmit(props.filter.field, selected).then(() => setSubmitting(false));
+    props.onSubmit(filterField, selected).then(() => setSubmitting(false));
   };
 
   const submitButton = () => {
     if (!isSubmitting)
       return (
-        <button type="button" className="btn btn-primary btn-lg btn-block" onClick={() => submitForm()}>
+        <button
+          type="button"
+          className="btn btn-primary btn-lg btn-block"
+          onClick={() => submitForm()}
+          data-testid={`${filterField}-select-enabled`}
+        >
           Select
         </button>
       );
     else
       return (
-        <button type="button" className="btn btn-secondary btn-lg btn-block" disabled>
+        <button
+          type="button"
+          className="btn btn-secondary btn-lg btn-block"
+          data-testid={`${filterField}-select-disabled}`}
+          disabled
+        >
           Select
         </button>
       );

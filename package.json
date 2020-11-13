@@ -72,5 +72,8 @@
     "*.{js,ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.5"
   }
 }
