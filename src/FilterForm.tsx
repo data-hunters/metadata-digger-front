@@ -36,7 +36,7 @@ const FilterForm: FC<FilterProps> = (props) => {
           type="button"
           className="btn btn-primary btn-lg btn-block"
           onClick={() => submitForm()}
-          data-testid={`${filterField}-select-enabled`}
+          data-testid={`filter-form-${filterField}-select-enabled`}
         >
           Select
         </button>
@@ -57,7 +57,7 @@ const FilterForm: FC<FilterProps> = (props) => {
   return (
     <div className="card">
       <article className="card-group-item">
-        <header className="card-header">{props.filter.field}</header>
+        <header className="card-header">{filterField}</header>
         <div className="filter-content">
           <div className="card-body">
             {props.filter.values.map((value) => {
@@ -71,6 +71,7 @@ const FilterForm: FC<FilterProps> = (props) => {
                       className="form-check-input"
                       checked={isSelected(value.name)}
                       onChange={() => toggleSelect(value.name)}
+                      data-testid={`filter-form-input-${filterField}-value-${value.name}`}
                     />
                     {value.name}
                   </label>
