@@ -1,12 +1,11 @@
-import { Filter } from './types';
-import { FC, useState } from 'react';
-import React from 'react';
+import { AppliedFilter, Filter } from './types';
+import React, { FC } from 'react';
 import FilterForm from './FilterForm';
 
 interface FiltersProps {
-  appliedFilters: Filter[];
+  appliedFilters: AppliedFilter[];
   possibleFilters: Filter[];
-  onSubmit: (filterName: string, selected: Set<string>) => Promise<void>;
+  onSubmit: (filterName: string, selected: Set<string>) => void;
 }
 
 const Filters: FC<FiltersProps> = (props) => {
@@ -14,7 +13,10 @@ const Filters: FC<FiltersProps> = (props) => {
     <div>
       <div>
         {props.appliedFilters.map((f) => (
-          <FilterForm filter={f} onSubmit={props.onSubmit} key={`applied-${f.field}`} />
+          <div key={`applied-filter-${f.field_name}`}>
+            <p>{f.field_name}</p>
+            <p>selected ${f.selected_values.join(' ')}</p>
+          </div>
         ))}
       </div>
       <div>

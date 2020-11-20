@@ -3,7 +3,7 @@ import React, { FC, useState } from 'react';
 
 interface FilterProps {
   filter: Filter;
-  onSubmit: (filterName: string, selected: Set<string>) => Promise<void>;
+  onSubmit: (filterName: string, selected: Set<string>) => void;
 }
 
 const FilterForm: FC<FilterProps> = (props) => {
@@ -26,7 +26,7 @@ const FilterForm: FC<FilterProps> = (props) => {
 
   const submitForm = () => {
     setSubmitting(true);
-    props.onSubmit(filterField, selected).then(() => setSubmitting(false));
+    props.onSubmit(filterField, selected);
   };
 
   const submitButton = () => {

@@ -53,8 +53,13 @@ export interface GraphState {
 export type GraphPlacement = 'left' | 'right';
 export const GRAPH_PLACEMENTS: GraphPlacement[] = ['left', 'right'];
 
+export interface AppliedFilter {
+  field_name: string;
+  selected_values: string[];
+}
+
 export interface FilteringState {
-  appliedFilters: Filter[];
+  appliedFilters: AppliedFilter[];
   possibleFilters: Filter[];
 }
 export interface AppState {
@@ -63,4 +68,5 @@ export interface AppState {
   facets: Facets;
   filteringState: FilteringState;
   graphs: Record<GraphPlacement, GraphType>;
+  searchQuery?: string;
 }

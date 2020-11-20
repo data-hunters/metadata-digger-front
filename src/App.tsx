@@ -19,27 +19,30 @@ const INITIAL_STATE: AppState = {
   facets: {},
   filteringState: { appliedFilters: [], possibleFilters: [] },
   graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
+  searchQuery: undefined,
 };
 
 const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
-  const [{ currentPhoto, photos, facets, filteringState, graphs }, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const handleSearchSubmit = useCallback((searchQuery: string) => {
-    makeRequest(searchQuery);
-  }, []);
+  const [{ currentPhoto, photos, facets, filteringState, graphs, searchQuery }, dispatch] = useReducer(
+    reducer,
+    INITIAL_STATE,
+  );
 
   useEffect(() => {
-    makeRequest(undefined);
-  }, []);
+    makeRequest();
+  }, [searchQuery, filteringState.appliedFilters]);
+
   useEffect(() => {
     document.title = 'Metadata Digger Web UI';
   }, []);
 
-  const makeRequest = async (searchQuery?: string) => {
+  const makeRequest = async () => {
     ApiService.getPhotos({
       facets: GRAPH_TYPES.map((v) => v as string),
       perPage: DEFAULT_PER_PAGE,
       searchQuery: searchQuery,
+      filters: filteringState.appliedFilters,
     }).then((response) => {
       dispatch(Actions.updateDate(response.data.photos, response.data.facets, response.data.possible_filters));
     });
@@ -52,8 +55,13 @@ const App: React.FC = () => {
     else return null;
   };
 
-  const submitFilter = async (filterName: string, selected: Set<string>): Promise<void> => {
+  const submitFilter = (filterName: string, selected: Set<string>): void => {
     console.log(`submitting: ${filterName} selected ${Array.from(selected).join(' ')}`);
+    dispatch(Actions.applyFilter(filterName, Array.from(selected)));
+  };
+
+  const handleSearchSubmit = (query: string): void => {
+    dispatch(Actions.startSearch(query));
   };
 
   return (

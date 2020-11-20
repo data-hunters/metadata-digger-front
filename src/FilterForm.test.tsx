@@ -20,6 +20,7 @@ describe('submit button', () => {
     const filter: Filter = defaultFilter;
 
     const mockOnSubmit = newMockOnSubmit();
+
     const { getByText, getAllByTestId } = render(<FilterForm filter={filter} onSubmit={mockOnSubmit} />);
     const fixture = new Fixture(filter, getByText, getAllByTestId);
 
@@ -31,11 +32,7 @@ describe('submit button', () => {
 });
 
 const newMockOnSubmit = () => {
-  const toBeReturned: Promise<void> = new Promise((resolve) => {
-    resolve();
-  });
-
-  return jest.fn((calledFilterName: string, calledSelectedValues: Set<string>) => toBeReturned);
+  return jest.fn((calledFilterName: string, calledSelectedValues: Set<string>) => {});
 };
 
 const defaultFilter: Filter = {

@@ -1,4 +1,4 @@
-import { AppState, Filter, FilteringState, GraphPlacement, GraphType } from './types';
+import { AppliedFilter, AppState, Filter, FilteringState, GraphPlacement, GraphType } from './types';
 import { Action } from './actions';
 
 export function reducer(state: AppState, action: Action): AppState {
@@ -17,11 +17,26 @@ export function reducer(state: AppState, action: Action): AppState {
       return { ...state, currentPhoto: action.newPhoto };
     case 'deselectPhoto':
       return { ...state, currentPhoto: undefined };
+    case 'startSearch':
+      return { ...state, searchQuery: action.searchQuery };
+    case 'applyFilter':
+      return {
+        ...state,
+        filteringState: applyNewFilter(state.filteringState, action.fieldName, action.selectedValues),
+      };
   }
 }
 
 function setPossibleFilters(filteringState: FilteringState, possibleFilters: Filter[]) {
   return { ...filteringState, possibleFilters: possibleFilters };
+}
+
+function applyNewFilter(filteringState: FilteringState, newFilterFieldName: string, newFilterValues: string[]) {
+  const newFilter: AppliedFilter = { field_name: newFilterFieldName, selected_values: newFilterValues };
+  const newAppliedFilters = filteringState.appliedFilters
+    .filter((e) => e.field_name !== newFilterFieldName)
+    .concat([newFilter]);
+  return { ...filteringState, appliedFilters: newAppliedFilters };
 }
 
 function copyGraphs(

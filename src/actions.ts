@@ -4,7 +4,9 @@ export type Action =
   | { type: 'updateData'; photos: Photo[]; facets: Facets; possibleFilters: Filter[] }
   | { type: 'changeGraphType'; whichGraph: GraphPlacement; newGraphType: GraphType }
   | { type: 'selectPhoto'; newPhoto: Photo }
-  | { type: 'deselectPhoto' };
+  | { type: 'deselectPhoto' }
+  | { type: 'startSearch'; searchQuery: string }
+  | { type: 'applyFilter'; fieldName: string; selectedValues: string[] };
 
 export const Actions = {
   updateDate: (photos: Photo[], facets: Facets, possibleFilters: Filter[]): Action => {
@@ -18,6 +20,12 @@ export const Actions = {
   },
   deselectPhoto: (): Action => {
     return { type: 'deselectPhoto' };
+  },
+  startSearch: (searchQuery: string): Action => {
+    return { type: 'startSearch', searchQuery: searchQuery };
+  },
+  applyFilter: (fieldName: string, selectedValues: string[]): Action => {
+    return { type: 'applyFilter', fieldName: fieldName, selectedValues: selectedValues };
   },
 };
 
