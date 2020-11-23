@@ -1,5 +1,6 @@
 import { Filter } from './types';
 import React, { FC, useState } from 'react';
+import * as _ from 'lodash';
 
 interface FilterProps {
   filter: Filter;
@@ -16,6 +17,8 @@ const FilterForm: FC<FilterProps> = (props) => {
   const isSelected: (valueName: string) => boolean = (valueName: string) => {
     return selected.has(valueName);
   };
+
+  const sortedValues = _.sortBy(props.filter.values, [(v) => -v.entry_count], [(v) => v.name]);
 
   const toggleSelect: (valueName: string) => void = (valueName) => {
     const newState = new Set(selected);
@@ -59,7 +62,7 @@ const FilterForm: FC<FilterProps> = (props) => {
         <header className="card-header">{filterField}</header>
         <div className="filter-content">
           <div className="card-body">
-            {props.filter.values.map((value) => {
+            {sortedValues.map((value) => {
               return (
                 <div className="form-check" key={value.name}>
                   <span className="float-right badge badge-light round">{value.entry_count}</span>

@@ -1,6 +1,7 @@
 import { AppliedFilter, Filter } from './types';
 import React, { FC } from 'react';
 import FilterForm from './FilterForm';
+import * as _ from 'lodash';
 
 interface FiltersProps {
   appliedFilters: AppliedFilter[];
@@ -10,6 +11,8 @@ interface FiltersProps {
 }
 
 const Filters: FC<FiltersProps> = (props) => {
+  const sortedPossibleFilters = _.sortBy(props.possibleFilters, [(f) => f.field]);
+
   return (
     <div>
       <div>
@@ -21,7 +24,7 @@ const Filters: FC<FiltersProps> = (props) => {
         ))}
       </div>
       <div>
-        {props.possibleFilters.map((f) => (
+        {sortedPossibleFilters.map((f) => (
           <FilterForm
             filter={f}
             onSubmit={props.onSubmit}
