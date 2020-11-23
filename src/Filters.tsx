@@ -5,6 +5,7 @@ import FilterForm from './FilterForm';
 interface FiltersProps {
   appliedFilters: AppliedFilter[];
   possibleFilters: Filter[];
+  requestInProgress: boolean;
   onSubmit: (filterName: string, selected: Set<string>) => void;
 }
 
@@ -21,7 +22,12 @@ const Filters: FC<FiltersProps> = (props) => {
       </div>
       <div>
         {props.possibleFilters.map((f) => (
-          <FilterForm filter={f} onSubmit={props.onSubmit} key={`possilbe-${f.field}`} />
+          <FilterForm
+            filter={f}
+            onSubmit={props.onSubmit}
+            key={`possilbe-${f.field}`}
+            isSubmitting={props.requestInProgress}
+          />
         ))}
       </div>
     </div>

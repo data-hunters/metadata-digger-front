@@ -1,7 +1,7 @@
 import { Photo, Facets, GraphType, GraphPlacement, Filter } from './types';
 
 export type Action =
-  | { type: 'updateData'; photos: Photo[]; facets: Facets; possibleFilters: Filter[] }
+  | { type: 'finishRequest'; photos: Photo[]; facets: Facets; possibleFilters: Filter[] }
   | { type: 'changeGraphType'; whichGraph: GraphPlacement; newGraphType: GraphType }
   | { type: 'selectPhoto'; newPhoto: Photo }
   | { type: 'deselectPhoto' }
@@ -9,8 +9,8 @@ export type Action =
   | { type: 'applyFilter'; fieldName: string; selectedValues: string[] };
 
 export const Actions = {
-  updateDate: (photos: Photo[], facets: Facets, possibleFilters: Filter[]): Action => {
-    return { type: 'updateData', photos: photos, facets: facets, possibleFilters };
+  finishRequest: (photos: Photo[], facets: Facets, possibleFilters: Filter[]): Action => {
+    return { type: 'finishRequest', photos: photos, facets: facets, possibleFilters };
   },
   changeGraphType: (whichGrap: GraphPlacement, newGraphType: GraphType): Action => {
     return { type: 'changeGraphType', whichGraph: whichGrap, newGraphType: newGraphType };

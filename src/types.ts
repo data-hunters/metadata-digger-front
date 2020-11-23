@@ -69,4 +69,5 @@ export interface AppState {
   filteringState: FilteringState;
   graphs: Record<GraphPlacement, GraphType>;
   searchQuery?: string;
+  requestInProgress: boolean;
 }

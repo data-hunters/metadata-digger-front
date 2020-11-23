@@ -3,13 +3,14 @@ import { Action } from './actions';
 
 export function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case 'updateData':
+    case 'finishRequest':
       return {
         ...state,
         photos: action.photos,
         facets: action.facets,
         currentPhoto: undefined,
         filteringState: setPossibleFilters(state.filteringState, action.possibleFilters),
+        requestInProgress: false,
       };
     case 'changeGraphType':
       return { ...state, graphs: copyGraphs(state.graphs, action.whichGraph, action.newGraphType) };
@@ -18,11 +19,12 @@ export function reducer(state: AppState, action: Action): AppState {
     case 'deselectPhoto':
       return { ...state, currentPhoto: undefined };
     case 'startSearch':
-      return { ...state, searchQuery: action.searchQuery };
+      return { ...state, searchQuery: action.searchQuery, requestInProgress: true };
     case 'applyFilter':
       return {
         ...state,
         filteringState: applyNewFilter(state.filteringState, action.fieldName, action.selectedValues),
+        requestInProgress: true,
       };
   }
 }

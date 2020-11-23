@@ -3,6 +3,7 @@ import React, { FC, useState } from 'react';
 
 interface FilterProps {
   filter: Filter;
+  isSubmitting: boolean;
   onSubmit: (filterName: string, selected: Set<string>) => void;
 }
 
@@ -11,7 +12,6 @@ const FilterForm: FC<FilterProps> = (props) => {
 
   const filterField = props.filter.field;
   const [selected, setSelected] = useState(new Set<string>(selectedValues));
-  const [isSubmitting, setSubmitting] = useState(false);
 
   const isSelected: (valueName: string) => boolean = (valueName: string) => {
     return selected.has(valueName);
@@ -25,12 +25,11 @@ const FilterForm: FC<FilterProps> = (props) => {
   };
 
   const submitForm = () => {
-    setSubmitting(true);
     props.onSubmit(filterField, selected);
   };
 
   const submitButton = () => {
-    if (!isSubmitting)
+    if (!props.isSubmitting)
       return (
         <button
           type="button"

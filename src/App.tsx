@@ -20,14 +20,15 @@ const INITIAL_STATE: AppState = {
   filteringState: { appliedFilters: [], possibleFilters: [] },
   graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
   searchQuery: undefined,
+  requestInProgress: true,
 };
 
 const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
-  const [{ currentPhoto, photos, facets, filteringState, graphs, searchQuery }, dispatch] = useReducer(
-    reducer,
-    INITIAL_STATE,
-  );
+  const [
+    { currentPhoto, photos, facets, filteringState, graphs, searchQuery, requestInProgress },
+    dispatch,
+  ] = useReducer(reducer, INITIAL_STATE);
 
   useEffect(() => {
     makeRequest();
@@ -44,7 +45,7 @@ const App: React.FC = () => {
       searchQuery: searchQuery,
       filters: filteringState.appliedFilters,
     }).then((response) => {
-      dispatch(Actions.updateDate(response.data.photos, response.data.facets, response.data.possible_filters));
+      dispatch(Actions.finishRequest(response.data.photos, response.data.facets, response.data.possible_filters));
     });
   };
 
@@ -107,6 +108,7 @@ const App: React.FC = () => {
               appliedFilters={filteringState.appliedFilters}
               possibleFilters={filteringState.possibleFilters}
               onSubmit={submitFilter}
+              requestInProgress={requestInProgress}
             />
           </div>
           <div className="row">
