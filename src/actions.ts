@@ -6,7 +6,9 @@ export type Action =
   | { type: 'selectPhoto'; newPhoto: Photo }
   | { type: 'deselectPhoto' }
   | { type: 'startSearch'; searchQuery: string }
-  | { type: 'applyFilter'; fieldName: string; selectedValues: string[] };
+  | { type: 'applyFilter'; fieldName: string; selectedValues: string[] }
+  | { type: 'removeValueFromFilter'; fieldName: string; valueToBeRemoved: string }
+  | { type: 'removeFilter'; fieldName: string };
 
 export const Actions = {
   finishRequest: (photos: Photo[], facets: Facets, possibleFilters: Filter[]): Action => {
@@ -26,6 +28,12 @@ export const Actions = {
   },
   applyFilter: (fieldName: string, selectedValues: string[]): Action => {
     return { type: 'applyFilter', fieldName: fieldName, selectedValues: selectedValues };
+  },
+  removeValueFromFilter: (fieldName: string, valueToBeRemoved: string): Action => {
+    return { type: 'removeValueFromFilter', fieldName: fieldName, valueToBeRemoved: valueToBeRemoved };
+  },
+  removeFilter: (fieldName: string): Action => {
+    return { type: 'removeFilter', fieldName: fieldName };
   },
 };
 

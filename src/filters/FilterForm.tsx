@@ -1,4 +1,4 @@
-import { Filter } from './types';
+import { Filter } from '../types';
 import React, { FC, useState } from 'react';
 import * as _ from 'lodash';
 
@@ -61,27 +61,29 @@ const FilterForm: FC<FilterProps> = (props) => {
       <article className="card-group-item">
         <header className="card-header">{filterField}</header>
         <div className="filter-content">
-          <div className="card-body">
-            {sortedValues.map((value) => {
-              return (
-                <div className="form-check" key={value.name}>
-                  <span className="float-right badge badge-light round">{value.entry_count}</span>
-                  <label className="form-check-label">
-                    <input
-                      type="checkbox"
-                      name={value.name}
-                      className="form-check-input"
-                      checked={isSelected(value.name)}
-                      onChange={() => toggleSelect(value.name)}
-                      data-testid={`filter-form-input-${filterField}-value-${value.name}`}
-                    />
-                    {value.name}
-                  </label>
-                </div>
-              );
-            })}
-            {submitButton()}
-          </div>
+          {
+            <div className="card-body">
+              {sortedValues.map((value) => {
+                return (
+                  <div className="form-check" key={value.name}>
+                    <span className="float-right badge badge-light round">{value.entry_count}</span>
+                    <label className="form-check-label">
+                      <input
+                        type="checkbox"
+                        name={value.name}
+                        className="form-check-input"
+                        checked={isSelected(value.name)}
+                        onChange={() => toggleSelect(value.name)}
+                        data-testid={`filter-form-input-${filterField}-value-${value.name}`}
+                      />
+                      {value.name}
+                    </label>
+                  </div>
+                );
+              })}
+              {submitButton()}
+            </div>
+          }
         </div>
       </article>
     </div>

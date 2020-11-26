@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, Matcher } from '@testing-library/react';
-import FilterForm from './FilterForm';
+import FilterForm from './filters/FilterForm';
 import { Filter } from './types';
 
 describe('submit button', () => {

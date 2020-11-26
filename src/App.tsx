@@ -11,7 +11,7 @@ import { reducer } from './reducer';
 import Actions from './actions';
 import ApiService from './ApiService';
 import PhotoMap from './PhotoMap';
-import Filters from './Filters';
+import Filters from './filters/Filters';
 
 const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
@@ -59,6 +59,16 @@ const App: React.FC = () => {
   const submitFilter = (filterName: string, selected: Set<string>): void => {
     console.log(`submitting: ${filterName} selected ${Array.from(selected).join(' ')}`);
     dispatch(Actions.applyFilter(filterName, Array.from(selected)));
+  };
+
+  const removeValueFromFilter = (filterName: string, value: string): void => {
+    console.log(`deselecting value from: ${filterName} value ${value}`);
+    dispatch(Actions.removeValueFromFilter(filterName, value));
+  };
+
+  const removeFilter = (filterName: string): void => {
+    console.log(`Removing filter: ${filterName}`);
+    dispatch(Actions.removeFilter(filterName));
   };
 
   const handleSearchSubmit = (query: string): void => {
@@ -109,6 +119,8 @@ const App: React.FC = () => {
               possibleFilters={filteringState.possibleFilters}
               onSubmit={submitFilter}
               requestInProgress={requestInProgress}
+              onFilterRemoved={removeFilter}
+              onValueValueRemovedFromFilter={removeValueFromFilter}
             />
           </div>
           <div className="row">

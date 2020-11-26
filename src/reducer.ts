@@ -26,6 +26,16 @@ export function reducer(state: AppState, action: Action): AppState {
         filteringState: applyNewFilter(state.filteringState, action.fieldName, action.selectedValues),
         requestInProgress: true,
       };
+    case 'removeValueFromFilter':
+      return {
+        ...state,
+        filteringState: removeValueFromFilter(state.filteringState, action.fieldName, action.valueToBeRemoved),
+      };
+    case 'removeFilter':
+      return {
+        ...state,
+        filteringState: removeAppliedFilter(state.filteringState, action.fieldName),
+      };
   }
 }
 
@@ -33,6 +43,21 @@ function setPossibleFilters(filteringState: FilteringState, possibleFilters: Fil
   return { ...filteringState, possibleFilters: possibleFilters };
 }
 
+function removeAppliedFilter(filteringState: FilteringState, fieldName: string) {
+  const newFilters = filteringState.appliedFilters.filter((f) => f.field_name !== fieldName);
+  return { ...filteringState, appliedFilters: newFilters };
+}
+function removeValueFromFilter(filteringState: FilteringState, fieldName: string, valueToBeRemoved: string) {
+  const appliedFilter = filteringState.appliedFilters.find((f) => f.field_name === fieldName);
+
+  if (appliedFilter) {
+    const newValues = appliedFilter.selected_values.filter((v) => v !== valueToBeRemoved);
+    if (newValues.length !== 0) return applyNewFilter(filteringState, fieldName, newValues);
+    else return removeAppliedFilter(filteringState, fieldName);
+  } else {
+    throw new Error('Trying to remove a value from not applied filter');
+  }
+}
 function applyNewFilter(filteringState: FilteringState, newFilterFieldName: string, newFilterValues: string[]) {
   const newFilter: AppliedFilter = { field_name: newFilterFieldName, selected_values: newFilterValues };
   const newAppliedFilters = filteringState.appliedFilters
