@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
@@ -31,14 +31,6 @@ const App: React.FC = () => {
   ] = useReducer(reducer, INITIAL_STATE);
 
   useEffect(() => {
-    makeRequest();
-  }, [searchQuery, filteringState.appliedFilters]);
-
-  useEffect(() => {
-    document.title = 'Metadata Digger Web UI';
-  }, []);
-
-  const makeRequest = async () => {
     ApiService.getPhotos({
       facets: GRAPH_TYPES.map((v) => v as string),
       perPage: DEFAULT_PER_PAGE,
@@ -47,7 +39,11 @@ const App: React.FC = () => {
     }).then((response) => {
       dispatch(Actions.finishRequest(response.data.photos, response.data.facets, response.data.possible_filters));
     });
-  };
+  }, [searchQuery, filteringState.appliedFilters]);
+
+  useEffect(() => {
+    document.title = 'Metadata Digger Web UI';
+  }, []);
 
   const getGraphState = (graphType: GraphType): GraphState | null => {
     const graphFacets = facets[graphType];
