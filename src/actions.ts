@@ -1,14 +1,18 @@
-import { Photo, Facets, GraphType, GraphPlacement } from './types';
+import { Photo, Facets, GraphType, GraphPlacement, Filter } from './types';
 
 export type Action =
-  | { type: 'updateData'; photos: Photo[]; facets: Facets }
+  | { type: 'finishRequest'; photos: Photo[]; facets: Facets; possibleFilters: Filter[] }
   | { type: 'changeGraphType'; whichGraph: GraphPlacement; newGraphType: GraphType }
   | { type: 'selectPhoto'; newPhoto: Photo }
-  | { type: 'deselectPhoto' };
+  | { type: 'deselectPhoto' }
+  | { type: 'startSearch'; searchQuery: string }
+  | { type: 'applyFilter'; fieldName: string; selectedValues: string[] }
+  | { type: 'removeValueFromFilter'; fieldName: string; valueToBeRemoved: string }
+  | { type: 'removeFilter'; fieldName: string };
 
 export const Actions = {
-  updateDate: (photos: Photo[], facets: Facets): Action => {
-    return { type: 'updateData', photos: photos, facets: facets };
+  finishRequest: (photos: Photo[], facets: Facets, possibleFilters: Filter[]): Action => {
+    return { type: 'finishRequest', photos: photos, facets: facets, possibleFilters };
   },
   changeGraphType: (whichGrap: GraphPlacement, newGraphType: GraphType): Action => {
     return { type: 'changeGraphType', whichGraph: whichGrap, newGraphType: newGraphType };
@@ -18,6 +22,18 @@ export const Actions = {
   },
   deselectPhoto: (): Action => {
     return { type: 'deselectPhoto' };
+  },
+  startSearch: (searchQuery: string): Action => {
+    return { type: 'startSearch', searchQuery: searchQuery };
+  },
+  applyFilter: (fieldName: string, selectedValues: string[]): Action => {
+    return { type: 'applyFilter', fieldName: fieldName, selectedValues: selectedValues };
+  },
+  removeValueFromFilter: (fieldName: string, valueToBeRemoved: string): Action => {
+    return { type: 'removeValueFromFilter', fieldName: fieldName, valueToBeRemoved: valueToBeRemoved };
+  },
+  removeFilter: (fieldName: string): Action => {
+    return { type: 'removeFilter', fieldName: fieldName };
   },
 };
 

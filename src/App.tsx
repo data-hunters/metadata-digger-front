@@ -1,54 +1,74 @@
-import React, { useCallback, useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import PhotosTable from './PhotosTable';
 import PhotoMetaData from './PhotoMetaData';
 
 import './App.css';
-import { GraphState, GraphType, AppState, GRAPH_PLACEMENTS, GRAPH_TYPES } from './types';
+import { AppState, GRAPH_PLACEMENTS, GRAPH_TYPES, GraphState, GraphType } from './types';
 import Navbar from './layout/Navbar';
 import GraphContainer from './GraphContainer';
 import { reducer } from './reducer';
 import Actions from './actions';
 import ApiService from './ApiService';
 import PhotoMap from './PhotoMap';
+import Filters from './filters/Filters';
 
 const INITIAL_STATE: AppState = {
   currentPhoto: undefined,
   photos: [],
   facets: {},
-  filteringState: { appliedFilters: [], possbileFilters: [] },
+  filteringState: { appliedFilters: [], possibleFilters: [] },
   graphs: { left: GraphType.FILE_TYPE, right: GraphType.CAMERA_MODEL },
+  searchQuery: undefined,
+  requestInProgress: true,
 };
 
 const DEFAULT_PER_PAGE = 100;
 const App: React.FC = () => {
-  const [{ currentPhoto, photos, facets, graphs }, dispatch] = useReducer(reducer, INITIAL_STATE);
-  const handleSearchSubmit = useCallback((searchQuery: string) => {
-    makeRequest(searchQuery);
-  }, []);
+  const [
+    { currentPhoto, photos, facets, filteringState, graphs, searchQuery, requestInProgress },
+    dispatch,
+  ] = useReducer(reducer, INITIAL_STATE);
 
   useEffect(() => {
-    makeRequest(undefined);
-  }, []);
-  useEffect(() => {
-    document.title = 'Metadata Digger Web UI';
-  }, []);
-
-  const makeRequest = async (searchQuery?: string) => {
     ApiService.getPhotos({
       facets: GRAPH_TYPES.map((v) => v as string),
       perPage: DEFAULT_PER_PAGE,
       searchQuery: searchQuery,
+      filters: filteringState.appliedFilters,
     }).then((response) => {
-      dispatch(Actions.updateDate(response.data.photos, response.data.facets));
+      dispatch(Actions.finishRequest(response.data.photos, response.data.facets, response.data.possible_filters));
     });
-  };
+  }, [searchQuery, filteringState.appliedFilters]);
+
+  useEffect(() => {
+    document.title = 'Metadata Digger Web UI';
+  }, []);
 
   const getGraphState = (graphType: GraphType): GraphState | null => {
     const graphFacets = facets[graphType];
 
     if (graphFacets) return { graphType: graphType, values: graphFacets };
     else return null;
+  };
+
+  const submitFilter = (filterName: string, selected: Set<string>): void => {
+    console.log(`submitting: ${filterName} selected ${Array.from(selected).join(' ')}`);
+    dispatch(Actions.applyFilter(filterName, Array.from(selected)));
+  };
+
+  const removeValueFromFilter = (filterName: string, value: string): void => {
+    console.log(`deselecting value from: ${filterName} value ${value}`);
+    dispatch(Actions.removeValueFromFilter(filterName, value));
+  };
+
+  const removeFilter = (filterName: string): void => {
+    console.log(`Removing filter: ${filterName}`);
+    dispatch(Actions.removeFilter(filterName));
+  };
+
+  const handleSearchSubmit = (query: string): void => {
+    dispatch(Actions.startSearch(query));
   };
 
   return (
@@ -88,6 +108,16 @@ const App: React.FC = () => {
           </div>
           <div className="row">
             <PhotoMap photos={photos} selectPhoto={(p) => dispatch(Actions.selectPhoto(p))} />
+          </div>
+          <div className="row">
+            <Filters
+              appliedFilters={filteringState.appliedFilters}
+              possibleFilters={filteringState.possibleFilters}
+              onSubmit={submitFilter}
+              requestInProgress={requestInProgress}
+              onFilterRemoved={removeFilter}
+              onValueValueRemovedFromFilter={removeValueFromFilter}
+            />
           </div>
           <div className="row">
             <div className="col-sm">
